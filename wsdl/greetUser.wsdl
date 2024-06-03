@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://tempuri.org/Greeter"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:tns="http://tempuri.org/Greeter"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <xsd:types>
+    <xsd:complexType name="GreetRequest">
+      <xsd:sequence>
+        <xsd:element name="name" type="xsd:string" />
+      </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="GreetResponse">
+      <xsd:sequence>
+        <xsd:element name="greeting" type="xsd:string" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:types>
+
+  <wsdl:message name="GreetRequestMessage">
+    <wsdl:part name="parameters" element="tns:GreetRequest" />
+  </wsdl:message>
+
+  <wsdl:message name="GreetResponseMessage">
+    <wsdl:part name="result" element="tns:GreetResponse" />
+  </wsdl:message>
+
+  <wsdl:portType name="GreeterPort">
+    <wsdl:operation name="Greet">
+      <wsdl:input message="tns:GreetRequestMessage" />
+      <wsdl:output message="tns:GreetResponseMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="GreeterBinding" type="tns:GreeterPort">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc"
+      xmlns:soap="http://schemas.xmlsoap.org/soap/" />
+
+    <wsdl:operation name="Greet">
+      <soap:operation soapAction="http://tempuri.org/Greeter/Greet" />
+      <wsdl:input>
+        <soap:body use="encoded" parts="tns:parameters" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" parts="tns:result" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:service name="GreeterService">
+    <wsdl:port name="GreeterPort" binding="tns:GreeterBinding">
+      <soap:address location="http://localhost:8080/Greeter" />
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions>
