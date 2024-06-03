@@ -10,5 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "soap": "^1.0.3"
+  },
+  "devDependencies": {
+    "eslint": "^9.4.0"
   }
 }
