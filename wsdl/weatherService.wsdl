@@ -1,6 +1,6 @@
 <definitions name="WeatherService"
-  targetNamespace="http://example.com/weather"
-  xmlns:tns="http://example.com/weather"
+  targetNamespace="http://localhost:8000/weather"
+  xmlns:tns="http://localhost:8000/weather"
   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
   xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
@@ -41,13 +41,13 @@
   <binding name="WeatherBinding" type="tns:WeatherPortType">
     <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
     <operation name="GetWeather">
-      <soap:operation soapAction="http://example.com/weather/GetWeather" />
+      <soap:operation soapAction="http://localhost:8000/weather/GetWeather" />
       <input>
-        <soap:body use="encoded" namespace="http://example.com/weather"
+        <soap:body use="encoded" namespace="http://localhost:8000/weather"
           encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output>
-        <soap:body use="encoded" namespace="http://example.com/weather"
+        <soap:body use="encoded" namespace="http://localhost:8000/weather"
           encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
     </operation>
@@ -55,7 +55,7 @@
 
   <service name="WeatherService">
     <port name="WeatherPort" binding="tns:WeatherBinding">
-      <soap:address location="http://example.com/weather" />
+      <soap:address location="http://localhost:8000/weather" />
     </port>
   </service>
 
