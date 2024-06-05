@@ -1,67 +1,11 @@
 const soap = require('soap');
-const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
+const { myService } = require('./services/definition/myService');
+const { greeterService } = require('./services/definition/greetUser');
 
-var myService = {
-  MyService: {
-    MyPort: {
-      MyFunction: function (args) {
-        return {
-          name: args.name,
-        };
-      },
-
-      // This is how to define an asynchronous function with a callback.
-      MyAsyncFunction: function (args, callback) {
-        // do some work
-        callback({
-          name: args.name,
-        });
-      },
-
-      // This is how to define an asynchronous function with a Promise.
-      MyPromiseFunction: function (args) {
-        return new Promise((resolve) => {
-          // do some work
-          resolve({
-            name: args.name,
-          });
-        });
-      },
-
-      // This is how to receive incoming headers
-      HeadersAwareFunction: function (args, cb, headers) {
-        return {
-          name: headers.Token,
-        };
-      },
-
-      // You can also inspect the original `req`
-      reallyDetailedFunction: function (args, cb, headers, req) {
-        console.log(
-          'SOAP `reallyDetailedFunction` request from ' +
-            req.connection.remoteAddress,
-        );
-        return {
-          name: headers.Token,
-        };
-      },
-    },
-  },
-};
-
-var xml = require('fs').readFileSync('wsdl/myservice.wsdl', 'utf8');
-
-//http server example
-var server = http.createServer(function (request, response) {
-  response.end('404: Not Found: ' + request.url);
-});
-
-server.listen(8000);
-soap.listen(server, '/wsdl', myService, xml, function () {
-  console.log('server initialized');
-});
+var xml_myService = require('fs').readFileSync('wsdl/myservice.wsdl', 'utf8');
+var xml_greeterService = require('fs').readFileSync('wsdl/greetUser.wsdl', 'utf8');
 
 //express server example
 var app = express();
@@ -71,13 +15,16 @@ app.use(
     type: function () {
       return true;
     },
-    limit: '5mb',
+    limit: '25mb',
   }),
 );
-app.listen(8001, function () {
-  //Note: /wsdl route will be handled by soap module
-  //and all other routes & middleware will continue to work
-  soap.listen(app, '/wsdl', myService, xml, function () {
+app.listen(8000, function () {
+
+  soap.listen(app, '/myservice', myService, xml_myService, function () {
+    console.log('server initialized');
+  });
+
+  soap.listen(app, '/greeter', greeterService, xml_greeterService, function () {
     console.log('server initialized');
   });
 });
